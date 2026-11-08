@@ -1,0 +1,11 @@
+Taruh foto Kapalo Banda di folder ini dengan nama:
+1.jpg  (besar, tampil paling menonjol)  - Danau dari atas
+2.jpg  - Pagi berkabut
+3.jpg  - Piknik keluarga
+4.jpg  (tinggi/potret)                  - Jalan setapak
+5.jpg  - Senja di air
+6.jpg  (lebar)                          - Bukit di sekeliling
+
+Ukuran yang disarankan: lebar sekitar 1200-1600 piksel, di bawah 400 KB per foto
+supaya website tetap cepat dibuka di HP. Teks keterangan bisa diganti di bagian
+GALERI pada index.html.
