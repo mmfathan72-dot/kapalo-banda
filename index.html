@@ -89,6 +89,12 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;op
 .hero-art{position:relative;aspect-ratio:1;max-width:520px;width:100%;justify-self:center}
 .hero-art .frame{position:absolute;inset:0;overflow:hidden;animation:blob 10s ease-in-out infinite;box-shadow:0 30px 80px -20px rgba(210,242,76,.35)}
 .hero-art svg{width:100%;height:100%;display:block}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:40% 50%;animation:kenburns 18s ease-in-out infinite alternate}
+@keyframes kenburns{from{transform:scale(1.05)}to{transform:scale(1.18) translate(-2%,1%)}}
+.gallery .credit{position:absolute;right:10px;top:10px;font-size:.68rem;background:rgba(18,20,13,.6);padding:.2em .6em;border-radius:999px;color:#ddd;text-decoration:none;opacity:.85}
+.gallery .credit:hover{opacity:1;text-decoration:underline}
+.credits{width:100%;font-size:.8rem;opacity:.8;margin-top:6px}
+.credits a{color:inherit}
 .sticker{position:absolute;background:var(--lav);color:var(--on-lime);font-weight:800;padding:.55em .95em;border-radius:999px;font-size:.92rem;box-shadow:0 10px 30px rgba(0,0,0,.35);white-space:nowrap}
 .sticker.s1{top:6%;left:-4%;transform:rotate(-8deg);animation:bob 4s ease-in-out infinite}
 .sticker.s2{bottom:10%;right:-3%;background:var(--lime);transform:rotate(6deg);animation:bob 5s ease-in-out infinite -2s}
@@ -320,6 +326,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
             <path d="M340 262 l14 -46 l14 46z"/><path d="M362 262 l10 -30 l10 30z"/>
           </g>
         </svg>
+        <!-- foto utama; kalau file tidak ada, ilustrasi di atas yang tampil -->
+        <img class="hero-photo" src="foto/1.jpg" alt="Rakit bambu di air tenang Kapalo Banda Taram dengan perbukitan hijau" onerror="this.remove()">
       </div>
       <span class="sticker s1">🌿 ekowisata</span>
       <span class="sticker s2">📍 8 km dari Payakumbuh</span>
@@ -539,6 +547,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   <div class="wrap">
     <span>© <span id="yr"></span> Pengelola Wisata Kapalo Banda · Nagari Taram</span>
     <span>Jaga alam, bawa pulang sampahmu 🌿</span>
+    <p class="credits" id="credits"></p>
   </div>
 </footer>
 
@@ -573,15 +582,22 @@ const PAKET = [
     isi:["Izin foto komersial","Akses spot pilihan","Maksimal 2 jam"] },
 ];
 
-// Foto galeri: taruh file di folder "foto" dengan nama 1.jpg sampai 6.jpg.
-// Selama fotonya belum ada, kotak berwarna akan tampil.
+// Foto galeri: file di folder "foto" (1.jpg sampai 6.jpg). foto/1.jpg juga jadi foto utama di atas.
+// Foto saat ini dari Wikimedia Commons (lisensi Creative Commons): nama fotografer & lisensi
+// WAJIB tetap tampil. Kalau diganti foto milik pengelola sendiri, hapus bagian "kredit".
 const GALERI = [
-  { file:"foto/1.jpg", teks:"Danau dari atas" },
-  { file:"foto/2.jpg", teks:"Pagi berkabut" },
-  { file:"foto/3.jpg", teks:"Piknik keluarga" },
-  { file:"foto/4.jpg", teks:"Jalan setapak" },
-  { file:"foto/5.jpg", teks:"Senja di air" },
-  { file:"foto/6.jpg", teks:"Bukit di sekeliling" },
+  { file:"foto/1.jpg", teks:"Rakit bambu & bukit hijau",
+    kredit:{oleh:"Sikaka04", lisensi:"CC BY 4.0", url:"https://commons.wikimedia.org/wiki/File:Bukit_hijau_dan_rakit_di_kapalo_banda_taram.jpg"} },
+  { file:"foto/2.jpg", teks:"Bendungan bertingkat",
+    kredit:{oleh:"fitri agung", lisensi:"CC BY 2.0", url:"https://commons.wikimedia.org/wiki/File:Kapalo_Banda_Taram_IMG_4131.jpg"} },
+  { file:"foto/3.jpg", teks:"Air tenang di Taram",
+    kredit:{oleh:"Sikaka04", lisensi:"CC BY 4.0", url:"https://commons.wikimedia.org/wiki/File:Sungai_tenang_dan_rerumputan_di_taram.jpg"} },
+  { file:"foto/4.jpg", teks:"Main air di bawah bukit",
+    kredit:{oleh:"fitri agung", lisensi:"CC BY 2.0", url:"https://commons.wikimedia.org/wiki/File:Kapalo_Banda_Taram_IMG_4154.jpg"} },
+  { file:"foto/5.jpg", teks:"Hutan & lembah Taram",
+    kredit:{oleh:"Ian Hermadiyansyah Putra", lisensi:"CC BY-SA 4.0", url:"https://commons.wikimedia.org/wiki/File:HUTAN_TARAM.jpg"} },
+  { file:"foto/6.jpg", teks:"Lembah berkabut dari atas",
+    kredit:{oleh:"Sikaka04", lisensi:"CC BY 4.0", url:"https://commons.wikimedia.org/wiki/File:Sungai_berkelok_dilembah_yang_berkabut_di_Taram.jpg"} },
 ];
 /* ========================================================= */
 
@@ -732,7 +748,10 @@ document.querySelectorAll("[data-wa]").forEach(a => {
       <img src="${g.file}" alt="${g.teks}" loading="lazy"
         onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',style:'background:${colors[k%colors.length]}',innerHTML:'📷<br>Foto belum ada<br><small>${g.file}</small>'}))">
       <figcaption>${g.teks}</figcaption>
+      ${g.kredit?`<a class="credit" href="${g.kredit.url}" target="_blank" rel="noopener">📷 ${g.kredit.oleh} · ${g.kredit.lisensi}</a>`:""}
     </figure>`).join("");
+  const kr = GALERI.filter(g=>g.kredit);
+  if (kr.length) $("#credits").innerHTML = "Foto: " + kr.map(g=>`<a href="${g.kredit.url}" target="_blank" rel="noopener">${g.teks}</a> oleh ${g.kredit.oleh} (${g.kredit.lisensi})`).join(" · ") + ", via Wikimedia Commons.";
 })();
 
 /* ---------- paket ---------- */

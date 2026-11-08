@@ -9,3 +9,8 @@ Taruh foto Kapalo Banda di folder ini dengan nama:
 Ukuran yang disarankan: lebar sekitar 1200-1600 piksel, di bawah 400 KB per foto
 supaya website tetap cepat dibuka di HP. Teks keterangan bisa diganti di bagian
 GALERI pada index.html.
+
+CATATAN (8 Nov 2026): foto 1-6 saat ini diambil dari Wikimedia Commons dengan lisensi
+Creative Commons (CC BY / CC BY-SA). Nama fotografer dan lisensinya wajib tetap tampil
+(sudah otomatis di galeri dan di bagian bawah website, diatur di bagian GALERI pada
+index.html). Kalau diganti dengan foto milik pengelola sendiri, hapus bagian "kredit".
